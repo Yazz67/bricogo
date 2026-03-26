@@ -48,6 +48,18 @@ animate.reveal('#why .card', {
     interval: 120
 });
 
+document.getElementById("contact-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    emailjs.sendForm("service_l0zgtc9", "template_200649d", this)
+        .then(() => {
+            document.getElementById("form-status").innerText = "Message envoyé avec succès !";
+            this.reset();
+        })
+        .catch(() => {
+            document.getElementById("form-status").innerText = "Erreur lors de l’envoi.";
+        });
+});
 
 /* ===========================
    ZONE D’INTERVENTION
