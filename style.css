@@ -1,0 +1,1267 @@
+:root {
+  --yellow: #ffd43b;
+  --yellow-dark: #e6b800;
+  --black: #0d0d0f;
+  --grey: #f5f5f5;
+  --white: #ffffff;
+  --glass: rgba(255,255,255,0.08);
+  --glass-border: rgba(255,255,255,0.18);
+  --radius: 18px;
+  --shadow-strong: 0 18px 45px rgba(0,0,0,0.45);
+  --shadow-soft: 0 8px 25px rgba(0,0,0,0.25);
+}
+.zone-map.active .zone-circle,
+.zone-map.active .zone-path,
+.zone-map.active .zone-pin {
+    animation-play-state: running;
+}
+.sr-top,
+.sr-bottom,
+.sr-left,
+.sr-right {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 0.8s ease;
+}
+.sr-top.sr-show,
+.sr-bottom.sr-show,
+.sr-left.sr-show,
+
+
+html::-webkit-scrollbar{
+    width: 0.5rem;
+    background: transparent;
+}
+html::-webkit-scrollbar-thumb{
+    background: var(--yellow-dark);
+}
+html {
+    scroll-behavior: smooth;
+}
+/* =========================================================
+   TYPOGRAPHIE GLOBALE — VELORE
+========================================================= */
+
+body {
+    font-family: "Inter", system-ui, sans-serif;
+    color: #1a1a1a;
+    letter-spacing: -0.2px;
+        padding-top: 80px; /* adapte à la hauteur de ton header */
+}
+
+/* Titres */
+h1, h2, h3 {
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+/* Paragraphes */
+p {
+    font-size: 16px;
+    line-height: 1.65;
+    color: #2a2a2a;
+}
+
+
+
+/* Petits textes */
+small, .tagline, .hero-meta span {
+    font-size: 14px;
+    color: #555;
+}
+/* =========================================================
+   HERO CARD — TEXTE
+========================================================= */
+
+.hero-card-left h3 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    color: #fff;
+}
+
+.hero-card-left p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 18px;
+}
+
+/* Tags */
+.hero-card-tag {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+/* Illustration header */
+.hero-illustration-header {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #333;
+}
+
+/* Tools */
+.hero-illustration-tools span {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Tagline */
+.tagline {
+    font-size: 13px;
+    font-weight: 500;
+    color: #444;
+}
+
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background: #ffffff;
+  color: #222;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a { text-decoration: none; color: inherit; }
+
+
+.header {
+  position: fixed;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 82%;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+background: #282828;
+  backdrop-filter: blur(22px) saturate(180%);
+  border-radius: 22px;
+  border: 1px solid var(--glass-border);
+
+  box-shadow:
+    inset 0 0 25px rgba(255,255,255,0.12),
+    var(--shadow-strong);
+
+  z-index: 9999;
+  transition: 0.3s ease;
+}
+
+.logo img {
+  height: 70px;
+  transition: 0.3s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.06);
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.navbar a {
+  padding: 10px 20px;
+  background: var(--glass);
+  border-radius: 14px;
+  border: 1px solid var(--glass-border);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.25s ease;
+}
+
+.navbar a:hover {
+  background: var(--yellow-dark);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 0 25px rgba(255,255,255,0.25),
+    var(--shadow-soft);
+    color: #ffffff;
+}
+
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  align-items: center;
+}
+
+.hamburger span {
+  width: 28px;
+  height: 3px;
+  background: #fff;
+  border-radius: 5px;
+  transition: 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+/* =========================================================
+   POURQUOI NOUS CHOISIR — LIQUID GLASS VELORE
+========================================================= */
+
+#why .section-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+#why .section-title {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+    color: #0d0d0f;
+}
+
+#why .section-subtitle {
+    font-size: 16px;
+    color: #555;
+    margin-top: 6px;
+}
+
+/* GRID */
+#why .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+}
+
+/* =========================================================
+   CARD — VERSION PREMIUM VELORE
+========================================================= */
+
+#why .card {
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+
+    border-radius: 22px;
+    padding: 26px;
+    border: 1px solid rgba(255,255,255,0.35);
+
+    box-shadow:
+        inset 0 0 18px rgba(255,255,255,0.25),
+        0 12px 35px rgba(0,0,0,0.15);
+
+    transition: 0.3s ease;
+}
+
+#why .card:hover {
+    transform: translateY(-6px);
+    box-shadow:
+        inset 0 0 25px rgba(255,255,255,0.35),
+        0 18px 45px rgba(0,0,0,0.25);
+}
+
+/* Header de carte */
+#why .card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+/* Icône */
+#why .card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.35);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+    box-shadow:
+        inset 0 0 12px rgba(255,255,255,0.25),
+        0 4px 14px rgba(0,0,0,0.15);
+}
+
+/* Titre */
+#why .card-title {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    color: #0d0d0f;
+}
+
+/* Texte */
+#why .card p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* =========================================================
+   SERVICES — LIQUID GLASS VELORE
+========================================================= */
+
+.section {
+    margin-bottom: 80px;
+    padding: 0 6vw;
+}
+
+/* Header de section */
+.section-header {
+    text-align: center;
+    margin-bottom: 40px;
+    margin-top: 5%;
+}
+
+.section-title {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+    color: #0d0d0f;
+}
+
+.section-subtitle {
+    font-size: 16px;
+    color: #555;
+    margin-top: 6px;
+}
+
+/* GRID */
+.grid {
+    display: grid;
+    gap: 28px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+}
+
+/* =========================================================
+   CARD — VERSION PREMIUM VELORE
+========================================================= */
+
+.card {
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+
+    border-radius: 22px;
+    padding: 26px;
+    border: 1px solid rgba(255,255,255,0.35);
+
+    box-shadow:
+        inset 0 0 18px rgba(255,255,255,0.25),
+        0 12px 35px rgba(0,0,0,0.15);
+
+    transition: 0.3s ease;
+    cursor: default;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow:
+        inset 0 0 25px rgba(255,255,255,0.35),
+        0 18px 45px rgba(0,0,0,0.25);
+}
+
+/* Header de carte */
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+/* Icône */
+.card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.35);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+    box-shadow:
+        inset 0 0 12px rgba(255,255,255,0.25),
+        0 4px 14px rgba(0,0,0,0.15);
+}
+
+/* Titre */
+.card-title {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    color: #0d0d0f;
+}
+
+/* Texte */
+.card p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #333;
+}
+
+
+@media (max-width: 900px) {
+  .navbar {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 240px;
+
+    flex-direction: column;
+    padding: 18px;
+    gap: 12px;
+
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(18px);
+    border-radius: 18px;
+    border: 1px solid var(--glass-border);
+
+    transform: translateY(-20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s ease;
+  }
+
+  .navbar.active {
+    transform: translateY(10px);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+
+/* =========================================================
+   HERO — LIQUID GLASS VELORE
+========================================================= */
+
+.hero {
+    margin-top: 180px;
+    padding: 0 6vw;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 70px;
+    align-items: center;
+}
+
+/* ------------------------------
+   LEFT SIDE — TEXT
+------------------------------ */
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(12px);
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #5a4500;
+    border: 1px solid rgba(255,255,255,0.45);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 22px;
+}
+
+.hero h2 {
+    font-size: clamp(36px, 4vw, 54px);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 18px;
+    color: #0d0d0f;
+}
+
+.hero h2 span {
+    color: var(--yellow-dark);
+}
+
+.hero p {
+    font-size: 17px;
+    line-height: 1.7;
+    max-width: 540px;
+    margin-bottom: 28px;
+    color: #333;
+}
+
+/* ------------------------------
+   ACTIONS
+------------------------------ */
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 26px;
+    
+}
+
+.hero-actions .glass-btn {
+    margin: 0;
+    
+}
+
+
+/* =========================================================
+   PILL — LIQUID GLASS VELORE (TEXTE OPTIMISÉ)
+========================================================= */
+
+.pill {
+    padding: 10px 22px;
+    border-radius: 999px;
+
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+
+    border: 1px solid rgba(255,255,255,0.35);
+
+    box-shadow:
+        inset 0 0 12px rgba(255,255,255,0.25),
+        0 4px 18px rgba(0,0,0,0.25);
+
+    /* TEXTE OPTIMISÉ */
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+    color: #0d0d0f;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    transition: 0.25s ease;
+}
+
+/* Hover */
+.pill:hover {
+    transform: scale(1.05);
+    background: rgba(255,255,255,0.25);
+    box-shadow:
+        inset 0 0 20px rgba(255,255,255,0.35),
+        0 6px 22px rgba(0,0,0,0.35);
+}
+
+
+/* =========================================================
+   HERO META — LIQUID GLASS VELORE
+========================================================= */
+
+.hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+
+    padding: 10px 18px;
+    border-radius: 16px;
+
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+
+    border: 1px solid rgba(255,255,255,0.35);
+
+    box-shadow:
+        inset 0 0 12px rgba(255,255,255,0.25),
+        0 4px 18px rgba(0,0,0,0.18);
+
+    margin-top: 10px;
+    margin-left: 2%;
+    max-width: fit-content;
+}
+
+/* Élément individuel */
+.hero-meta span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 6px 14px;
+    border-radius: 12px;
+
+    background: rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.35);
+    backdrop-filter: blur(10px);
+
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+    color: #0d0d0f;
+
+    box-shadow:
+        inset 0 0 10px rgba(255,255,255,0.25),
+        0 2px 10px rgba(0,0,0,0.15);
+
+    transition: 0.25s ease;
+}
+
+/* Petit point premium */
+.hero-meta span::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+
+    background: var(--yellow-dark);
+    box-shadow: 0 0 6px rgba(255,212,59,0.6);
+}
+
+/* Hover */
+.hero-meta span:hover {
+    transform: scale(1.05);
+    background: rgba(255,255,255,0.35);
+    box-shadow:
+        inset 0 0 18px rgba(255,255,255,0.35),
+        0 4px 16px rgba(0,0,0,0.25);
+}
+
+
+/* ------------------------------
+   RIGHT SIDE — LIQUID GLASS CARD
+------------------------------ */
+
+.hero-card {
+    background: var(--yellow-dark);
+    backdrop-filter: blur(22px) saturate(180%);
+    border-radius: 28px;
+    padding: 32px;
+    border: 1px solid rgba(255,255,255,0.25);
+
+    box-shadow:
+        0 18px 45px rgba(0,0,0,0.25),
+        inset 0 0 35px rgba(255,255,255,0.15);
+
+    position: relative;
+    overflow: hidden;
+}
+
+/* Glow subtil */
+.hero-card::before {
+    content: "";
+    position: absolute;
+    top: -40%;
+    left: -40%;
+    width: 180%;
+    height: 180%;
+    background: radial-gradient(
+        circle at 30% 30%,
+        rgba(255,255,255,0.25),
+        transparent 60%
+    );
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+.hero-card-inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 26px;
+}
+
+/* ------------------------------
+   CARD LEFT CONTENT
+------------------------------ */
+
+.hero-card-left h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #fff;
+}
+
+.hero-card-left p {
+    font-size: 15px;
+    opacity: 0.9;
+    margin-bottom: 16px;
+    color: #eee;
+}
+
+.hero-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.hero-card-tag {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    font-size: 12px;
+    color: #fff;
+    backdrop-filter: blur(8px);
+}
+
+/* ------------------------------
+   CARD RIGHT ILLUSTRATION
+------------------------------ */
+
+.hero-illustration {
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(14px);
+    border-radius: 22px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #222;
+    border: 1px solid rgba(255,255,255,0.35);
+}
+
+.hero-illustration-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #333;
+}
+
+.hero-illustration-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 12px;
+}
+
+.hero-illustration-tools span {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.06);
+    color: #333;
+}
+
+.tagline {
+    font-size: 13px;
+    color: #444;
+    margin-top: 6px;
+}
+
+/* ------------------------------
+   RESPONSIVE
+------------------------------ */
+
+@media (max-width: 1000px) {
+    .hero {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero {
+        margin-top: 140px;
+    }
+
+    .hero-card {
+        padding: 24px;
+    }
+
+    .hero h2 {
+        font-size: 32px;
+    }
+}
+
+
+.pill {
+  padding: 8px 16px;
+  background: rgba(0,0,0,0.06);
+  border-radius: 999px;
+  font-size: 13px;
+  border: 1px solid #ddd;
+}
+
+
+/* =========================================================
+   BOUTON LIQUID GLASS VELORE
+========================================================= */
+
+.glass-btn {
+    margin-top: 10px;
+    padding: 12px 28px;
+    border-radius: 14px;
+    cursor: pointer;
+
+    background: rgba(255,255,255,0.15);
+    color: #0d0d0f;
+    font-size: 16px;
+    font-weight: 600;
+
+    backdrop-filter: blur(14px) saturate(200%);
+    -webkit-backdrop-filter: blur(14px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+
+    box-shadow:
+        inset 0 0 18px rgba(255, 255, 255, 0.25),
+        0 6px 22px rgba(0, 0, 0, 0.35);
+
+    transition: 0.3s ease;
+}
+.header {
+    transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.header.hide {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+/* Hover */
+.glass-btn:hover {
+    transform: scale(1.08);
+    background: rgba(255,255,255,0.22);
+    box-shadow:
+        inset 0 0 28px rgba(255, 255, 255, 0.35),
+        0 10px 30px rgba(0, 0, 0, 0.45);
+        background: var(--yellow);
+}
+
+
+
+.card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 20px;
+  border: 1px solid #eee;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+  transition: 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+
+}
+
+.card-icon {
+  width: 36px;
+  height: 36px;
+  background: #fff7cc;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+
+.zone-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.zone-map-card {
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(18px);
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow:
+        inset 0 0 18px rgba(255,255,255,0.25),
+        0 12px 35px rgba(0,0,0,0.18);
+    padding: 18px 18px 20px;
+}
+
+/* Header style fenêtre */
+.zone-map-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.zone-map-header .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.12);
+}
+
+.zone-map-title {
+    margin-left: auto;
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+}
+
+/* Carte */
+
+.zone-map {
+    position: relative;
+width: 100%;
+    height: 100%;    border-radius: 18px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+
+
+
+
+
+.road-h {
+    height: 14px;
+    width: 260px;
+    top: 120px;
+    left: 20px;
+}
+
+.road-v {
+    width: 14px;
+    height: 220px;
+    top: 20px;
+    left: 140px;
+}
+
+.road-diag {
+    width: 14px;
+    height: 220px;
+    top: 40px;
+    left: 220px;
+    transform: rotate(35deg);
+}
+
+
+
+
+/* ------------------------------
+   INFOS
+------------------------------ */
+
+.zone-info h3 {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.zone-info p {
+    font-size: 15px;
+    margin-bottom: 16px;
+}
+
+.zone-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.zone-tag {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.8);
+    border: 1px solid rgba(0,0,0,0.06);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.zone-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.zone-badges span {
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.9);
+    border: 1px solid rgba(0,0,0,0.05);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* ------------------------------
+   ANIMATIONS
+------------------------------ */
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes popIn {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .zone-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ===========================
+   CONTACT SECTION
+=========================== */
+
+.contact-section {
+    display: grid;
+    grid-template-columns: 1fr 0.8fr;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+/* FORM CARD */
+.contact-section form {
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(18px) saturate(180%);
+    border-radius: 22px;
+    padding: 28px;
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow:
+        inset 0 0 18px rgba(255,255,255,0.25),
+        0 12px 35px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.contact-section label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0d0d0f;
+}
+
+.contact-section input,
+.contact-section textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,0.08);
+    background: rgba(255,255,255,0.65);
+    font-size: 15px;
+    color: #0d0d0f;
+    transition: 0.25s ease;
+}
+
+.contact-section input:focus,
+.contact-section textarea:focus {
+    border-color: var(--yellow-dark);
+    background: rgba(255,255,255,0.9);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(245,197,66,0.25);
+}
+
+.contact-section textarea {
+    height: 120px;
+    resize: none;
+}
+
+/* BUTTON */
+.btn-primary {
+    margin-top: 10px;
+    padding: 14px 18px;
+    border-radius: 14px;
+    background: var(--yellow-dark);
+    color: #0d0d0f;
+    font-weight: 700;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* ===========================
+   CONTACT INFOS
+=========================== */
+
+.contact-infos {
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(18px);
+    border-radius: 22px;
+    padding: 28px;
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow:
+        inset 0 0 18px rgba(255,255,255,0.25),
+        0 12px 35px rgba(0,0,0,0.15);
+}
+
+.contact-infos strong {
+    font-size: 18px;
+    font-weight: 800;
+    color: #0d0d0f;
+}
+
+.contact-infos p {
+    font-size: 15px;
+    color: #333;
+    margin-top: 10px;
+}
+
+/* BADGES */
+.contact-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.badge {
+    padding: 8px 14px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.35);
+    border: 1px solid rgba(255,255,255,0.45);
+    backdrop-filter: blur(12px);
+    font-size: 14px;
+    font-weight: 600;
+    color: #0d0d0f;
+    box-shadow:
+        inset 0 0 12px rgba(255,255,255,0.25),
+        0 4px 14px rgba(0,0,0,0.15);
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 900px) {
+    .contact-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+input, textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  transition: 0.25s ease;
+}
+
+input:focus, textarea:focus {
+  border-color: var(--yellow-dark);
+  box-shadow: 0 0 0 2px rgba(255,212,59,0.35);
+}
+/* ===========================
+   FOOTER
+=========================== */
+
+.footer {
+    margin-top: 80px;
+    padding: 50px 0 25px;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(18px) saturate(180%);
+    border-top: 1px solid rgba(255,255,255,0.25);
+    box-shadow:
+        inset 0 0 18px rgba(255,255,255,0.25),
+        0 -12px 35px rgba(0,0,0,0.15);
+}
+
+/* GRID */
+.footer-grid {
+    max-width: 1100px;
+    margin: auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+}
+
+/* TITRES */
+.footer-col h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #0d0d0f;
+}
+
+/* TEXTES */
+.footer-col p {
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+/* LIENS */
+.footer-col a {
+    display: block;
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 6px;
+    text-decoration: none;
+    transition: 0.25s ease;
+}
+
+.footer-col a:hover {
+    color: var(--yellow-dark);
+    transform: translateX(4px);
+}
+
+/* BOTTOM */
+.footer-bottom {
+    text-align: center;
+    margin-top: 35px;
+    font-size: 14px;
+    color: #555;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+}

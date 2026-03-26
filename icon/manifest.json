@@ -1,0 +1,16 @@
+{
+	"$schema": "https://json-schema.org/draft/2019-09/schema",
+	"name": "favicon",
+	"lang" : "fr-FR",
+	"start_url" : "/",    
+	"icons": [
+    	{
+		"type": "image/png",
+		"48": "/favicon-48.png",
+		"96": "/favicon-96.png",
+		"192": "/favicon-192.png",
+		"256": "/favicon-256.png",
+		"512": "/favicon-512.png"
+	}
+   ]
+}
