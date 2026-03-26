@@ -8,6 +8,10 @@
   <link rel="icon" type="image/png" sizes="32x32" href="icon/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="icon/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icon/apple-touch-icon.png">
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+    emailjs.init("lXrvI0MaAdHPNPiB0");
+</script>
 </head>
 <body>
 
@@ -250,10 +254,7 @@
 
       <div class="zone-tags">
         <span class="zone-tag">Huttenheim</span>
-        <span class="zone-tag">Illkirch</span>
-        <span class="zone-tag">Schiltigheim</span>
-        <span class="zone-tag">Bischheim</span>
-        <span class="zone-tag">+20 km</span>
+        <span class="zone-tag">+20 km au alentours</span>
       </div>
 
       <div class="zone-badges">
@@ -279,21 +280,22 @@
 
   <div class="contact-section">
     <div>
-      <form>
+      <form id="contact-form">
         <label for="name">Nom</label>
-        <input id="name" type="text" placeholder="Votre nom">
+       <input type="text" name="name" placeholder="Votre nom" required>
+       <label for="email">Email</label>
 
-        <label for="email">Email</label>
-        <input id="email" type="email" placeholder="votre@email">
-
-        <label for="phone">Téléphone</label>
-        <input id="phone" type="tel" placeholder="+33...">
-
-        <label for="message">Votre demande</label>
-        <textarea id="message" placeholder="Décrivez vos travaux..."></textarea>
+    <input type="email" name="email" placeholder="Votre email" required>
+<label for="phone">Téléphone</label>
+    <input type="tel" name="phone" placeholder="+33..." required>
+<label for="title">Objet</label>
+       <input type="title" name="title" placeholder="Objet" required>
+          <label for="message">Message</label>
+    <textarea name="message" placeholder="Décrivez vos travaux..." required></textarea>
 
         <button type="submit" class="glass-btn">📄 Demander un devis gratuit</button>
       </form>
+      <p id="form-status"></p>
     </div>
 
     <div class="contact-infos">
@@ -340,7 +342,7 @@
   </div>
 
   <div class="footer-bottom">
-    © 2024 Homme à tout faire — Tous droits réservés.
+    © 2024 Brico'Go — Tous droits réservés.
   </div>
 </footer>
 <script src="https://unpkg.com/scrollreveal"></script>
