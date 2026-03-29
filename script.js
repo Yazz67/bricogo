@@ -10,6 +10,32 @@ const animate = ScrollReveal({
 =========================== */
 animate.reveal('.header', { origin: 'top' });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const header = document.querySelector('.header');
+    if (!header) return;
+
+    let lastScroll = window.scrollY;
+
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.scrollY;
+
+        if (currentScroll > lastScroll && currentScroll > 80) {
+            header.classList.remove('show');
+            header.classList.add('hide');
+        } else {
+            header.classList.remove('hide');
+            header.classList.add('show');
+        }
+
+        lastScroll = currentScroll;
+    });
+});
+
+
+
+
+
+
 
 /* ===========================
    HERO
