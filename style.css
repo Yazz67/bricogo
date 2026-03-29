@@ -157,18 +157,52 @@ a { text-decoration: none; color: inherit; }
   display: flex;
   justify-content: space-between;
   align-items: center;
-background: #282828;
+  background: #282828;
   backdrop-filter: blur(22px) saturate(180%);
   border-radius: 22px;
   border: 1px solid var(--glass-border);
-
   box-shadow:
     inset 0 0 25px rgba(255,255,255,0.12),
     var(--shadow-strong);
-
   z-index: 9999;
-  transition: 0.3s ease;
+  transition: top 0.3s ease, opacity 0.3s ease;
 }
+
+.header.hide {
+  top: -120px; /* tu peux ajuster */
+  opacity: 0;
+}
+
+.header.hide {
+  animation: headerHide 0.45s ease forwards;
+}
+
+.header.show {
+  animation: headerShow 0.45s ease forwards;
+}
+
+@keyframes headerHide {
+  0% {
+    top: 25px;
+    opacity: 1;
+  }
+  100% {
+    top: -120px;
+    opacity: 0;
+  }
+}
+
+@keyframes headerShow {
+  0% {
+    top: -120px;
+    opacity: 0;
+  }
+  100% {
+    top: 25px;
+    opacity: 1;
+  }
+}
+
 
 .logo img {
   height: 70px;
