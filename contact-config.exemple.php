@@ -7,12 +7,12 @@
    Ce fichier contient un mot de passe : ne le partage pas.
 =========================== */
 
-// Adresse créée dans cPanel > Comptes de messagerie (ex. contact@tondomaine.fr)
-const SMTP_UTILISATEUR = 'contact@tondomaine.fr';
+// Adresse créée dans cPanel > Comptes de messagerie
+const SMTP_UTILISATEUR = 'huseyin@brico-go.fr';
 
 // Mot de passe de cette adresse
-const SMTP_MOT_DE_PASSE = 'ton-mot-de-passe';
+const SMTP_MOT_DE_PASSE = 'METS-ICI-TON-MOT-DE-PASSE';
 
 // Serveur sortant : cPanel > Comptes de messagerie > « Connect Devices »
-// (ligne « Serveur sortant », souvent du type xxxx.o2switch.net)
-const SMTP_SERVEUR = 'xxxx.o2switch.net';
+// (ligne « Serveur sortant »). Si ce n'est pas mail.brico-go.fr, remplace-le.
+const SMTP_SERVEUR = 'mail.brico-go.fr';
