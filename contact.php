@@ -104,13 +104,17 @@ if (defined('SMTP_UTILISATEUR') && SMTP_UTILISATEUR !== '') {
         $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
         $mail->CharSet    = 'UTF-8';
-        $mail->setFrom(SMTP_UTILISATEUR, "Site Brico'Go");
+        $mail->XMailer    = ' '; // pas d'en-tête « X-Mailer: PHPMailer », mal vu des filtres anti-spam
+        $mail->setFrom(SMTP_UTILISATEUR, "Brico'Go");
         foreach (DESTINATAIRES as $destinataire) {
             $mail->addAddress($destinataire);
         }
         $mail->addReplyTo($email, $nom);
         $mail->Subject = $sujet;
-        $mail->Body    = $corps;
+        // Version HTML + texte, comme un mail envoyé depuis le webmail
+        $mail->isHTML(true);
+        $mail->Body    = '<p>' . nl2br(htmlspecialchars($corps, ENT_QUOTES, 'UTF-8')) . '</p>';
+        $mail->AltBody = $corps;
         $mail->send();
         $envoye = true;
     } catch (Throwable $e) {
@@ -123,7 +127,7 @@ if (!$envoye) {
     // Envoi simple via le serveur (secours si le SMTP n'est pas configuré ou échoue)
     $expediteur = defined('SMTP_UTILISATEUR') && SMTP_UTILISATEUR !== '' ? SMTP_UTILISATEUR : EXPEDITEUR;
     $entetes = [
-        'From'                      => "Site Brico'Go <$expediteur>",
+        'From'                      => "Brico'Go <$expediteur>",
         'Reply-To'                  => "$nom <$email>",
         'MIME-Version'              => '1.0',
         'Content-Type'              => 'text/plain; charset=UTF-8',
