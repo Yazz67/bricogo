@@ -4,7 +4,7 @@
 =========================== */
 
 // Adresse qui reçoit les demandes de devis
-const DESTINATAIRE = 'd.dogan67@icloud.com';
+const DESTINATAIRE = 'huseyin@brico-go.fr';
 
 // Envoi authentifié (recommandé) : remplir contact-config.php
 // (voir contact-config.exemple.php). Sans ce fichier, envoi simple via mail().
@@ -80,6 +80,8 @@ $corps = "Nouvelle demande depuis le site Brico'Go\n"
        . "----------------------------------------\n"
        . 'Envoyé le ' . date('d/m/Y à H:i') . " depuis $domaine\n";
 
+$envoye = false;
+
 if (defined('SMTP_UTILISATEUR') && SMTP_UTILISATEUR !== '') {
     // Envoi SMTP authentifié avec la boîte mail du domaine
     require __DIR__ . '/lib/PHPMailer/Exception.php';
@@ -107,9 +109,12 @@ if (defined('SMTP_UTILISATEUR') && SMTP_UTILISATEUR !== '') {
         error_log('Brico\'Go contact SMTP : ' . $mail->ErrorInfo);
         $envoye = false;
     }
-} else {
-    // Envoi simple via le serveur (moins fiable : peut finir en spam)
-    $expediteur = 'no-reply@' . $domaine;
+}
+
+if (!$envoye) {
+    // Envoi simple via le serveur (secours si le SMTP n'est pas configuré ou échoue)
+    // Expéditeur : la vraie boîte du domaine (meilleure délivrabilité qu'une adresse inexistante)
+    $expediteur = defined('SMTP_UTILISATEUR') && SMTP_UTILISATEUR !== '' ? SMTP_UTILISATEUR : DESTINATAIRE;
     $entetes = [
         'From'                      => "Site Brico'Go <$expediteur>",
         'Reply-To'                  => "$nom <$email>",
