@@ -5,7 +5,7 @@
 
 // Adresse(s) qui reçoivent les demandes de devis (tu peux en mettre plusieurs)
 const DESTINATAIRES = [
-    'huseyin@brico-go.fr',
+    'pro.dig201@passmail.net',
 ];
 
 // Adresse qui envoie le mail : toujours une vraie boîte de ton domaine,
@@ -105,7 +105,7 @@ if (defined('SMTP_UTILISATEUR') && SMTP_UTILISATEUR !== '') {
         $mail->Port       = 465;
         $mail->CharSet    = 'UTF-8';
         $mail->XMailer    = ' '; // pas d'en-tête « X-Mailer: PHPMailer », mal vu des filtres anti-spam
-        $mail->setFrom(SMTP_UTILISATEUR, "Brico'Go");
+        $mail->setFrom(SMTP_UTILISATEUR, "Client Brico'Go");
         foreach (DESTINATAIRES as $destinataire) {
             $mail->addAddress($destinataire);
         }
@@ -127,7 +127,7 @@ if (!$envoye) {
     // Envoi simple via le serveur (secours si le SMTP n'est pas configuré ou échoue)
     $expediteur = defined('SMTP_UTILISATEUR') && SMTP_UTILISATEUR !== '' ? SMTP_UTILISATEUR : EXPEDITEUR;
     $entetes = [
-        'From'                      => "Brico'Go <$expediteur>",
+        'From'                      => "Client Brico'Go <$expediteur>",
         'Reply-To'                  => "$nom <$email>",
         'MIME-Version'              => '1.0',
         'Content-Type'              => 'text/plain; charset=UTF-8',
