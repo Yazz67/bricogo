@@ -3,8 +3,14 @@
    FORMULAIRE DE CONTACT — envoi via l'hébergeur (o2switch)
 =========================== */
 
-// Adresse qui reçoit les demandes de devis
-const DESTINATAIRE = 'huseyin@brico-go.fr';
+// Adresse(s) qui reçoivent les demandes de devis (tu peux en mettre plusieurs)
+const DESTINATAIRES = [
+    'huseyin@brico-go.fr',
+];
+
+// Adresse qui envoie le mail : toujours une vraie boîte de ton domaine,
+// sinon les messageries (Gmail, Proton…) le refusent
+const EXPEDITEUR = 'huseyin@brico-go.fr';
 
 // Envoi authentifié (recommandé) : remplir contact-config.php
 // (voir contact-config.exemple.php). Sans ce fichier, envoi simple via mail().
@@ -99,7 +105,9 @@ if (defined('SMTP_UTILISATEUR') && SMTP_UTILISATEUR !== '') {
         $mail->Port       = 465;
         $mail->CharSet    = 'UTF-8';
         $mail->setFrom(SMTP_UTILISATEUR, "Site Brico'Go");
-        $mail->addAddress(DESTINATAIRE);
+        foreach (DESTINATAIRES as $destinataire) {
+            $mail->addAddress($destinataire);
+        }
         $mail->addReplyTo($email, $nom);
         $mail->Subject = $sujet;
         $mail->Body    = $corps;
@@ -113,8 +121,7 @@ if (defined('SMTP_UTILISATEUR') && SMTP_UTILISATEUR !== '') {
 
 if (!$envoye) {
     // Envoi simple via le serveur (secours si le SMTP n'est pas configuré ou échoue)
-    // Expéditeur : la vraie boîte du domaine (meilleure délivrabilité qu'une adresse inexistante)
-    $expediteur = defined('SMTP_UTILISATEUR') && SMTP_UTILISATEUR !== '' ? SMTP_UTILISATEUR : DESTINATAIRE;
+    $expediteur = defined('SMTP_UTILISATEUR') && SMTP_UTILISATEUR !== '' ? SMTP_UTILISATEUR : EXPEDITEUR;
     $entetes = [
         'From'                      => "Site Brico'Go <$expediteur>",
         'Reply-To'                  => "$nom <$email>",
@@ -123,7 +130,7 @@ if (!$envoye) {
         'Content-Transfer-Encoding' => '8bit',
     ];
     $envoye = mail(
-        DESTINATAIRE,
+        implode(', ', DESTINATAIRES),
         '=?UTF-8?B?' . base64_encode($sujet) . '?=',
         $corps,
         $entetes,
