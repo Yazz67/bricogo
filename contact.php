@@ -5,7 +5,7 @@
 
 // Adresse(s) qui reçoivent les demandes de devis (tu peux en mettre plusieurs)
 const DESTINATAIRES = [
-    'pro.dig201@passmail.net',
+    'dalil7@proton.me',
 ];
 
 // Adresse qui envoie le mail : toujours une vraie boîte de ton domaine,
@@ -21,6 +21,7 @@ if (is_file(__DIR__ . '/contact-config.php')) {
 // Délai minimum entre deux envois depuis la même adresse IP (secondes)
 const DELAI_ANTI_SPAM = 30;
 
+date_default_timezone_set('Europe/Paris');
 header('Content-Type: application/json; charset=utf-8');
 
 function repondre(int $code, bool $ok, string $message): void
@@ -76,15 +77,65 @@ if (is_file($verrou) && time() - filemtime($verrou) < DELAI_ANTI_SPAM) {
 $domaine = preg_replace('/^www\./', '', strtolower(explode(':', $_SERVER['HTTP_HOST'] ?? 'localhost')[0]));
 
 $sujet = "Demande de devis : $objet";
-$corps = "Nouvelle demande depuis le site Brico'Go\n"
-       . "----------------------------------------\n\n"
-       . "Nom       : $nom\n"
-       . "Email     : $email\n"
-       . "Téléphone : $tel\n"
-       . "Objet     : $objet\n\n"
-       . "Message :\n$message\n\n"
-       . "----------------------------------------\n"
-       . 'Envoyé le ' . date('d/m/Y à H:i') . " depuis $domaine\n";
+$date  = date('d/m/Y à H:i');
+
+// Version texte (pour les messageries qui n'affichent pas le HTML)
+$corps = "NOUVELLE DEMANDE DE DEVIS\n"
+       . "Reçue le $date depuis $domaine\n\n"
+       . "CLIENT\n"
+       . "  Nom        $nom\n"
+       . "  Téléphone  $tel\n"
+       . "  Email      $email\n\n"
+       . "OBJET\n"
+       . "  $objet\n\n"
+       . "MESSAGE\n"
+       . preg_replace('/^/m', '  ', $message) . "\n\n"
+       . "Pour répondre au client, utilise simplement « Répondre ».\n";
+
+// Version HTML mise en page (styles en ligne, compatibles avec toutes les messageries)
+$h = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
+$telLien  = preg_replace('/[^0-9+]/', '', $tel);
+$mailLien = 'mailto:' . rawurlencode($email) . '?subject=' . rawurlencode("Re : $sujet");
+$ligne = fn(string $label, string $valeur): string =>
+    '<tr><td style="padding:10px 0;border-bottom:1px solid #eeeae2;color:#8a8578;font-size:13px;width:110px;vertical-align:top">'
+    . $label . '</td><td style="padding:10px 0;border-bottom:1px solid #eeeae2;color:#1a1a1a;font-size:15px;font-weight:600">'
+    . $valeur . '</td></tr>';
+
+$corpsHtml = '<!doctype html><html lang="fr"><body style="margin:0;padding:0;background:#f4f3ef">'
+  . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f3ef;padding:24px 12px"><tr><td align="center">'
+  . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:14px;overflow:hidden;font-family:Arial,Helvetica,sans-serif">'
+  // En-tête
+  . '<tr><td style="background:#0b0b0e;padding:22px 28px;border-bottom:4px solid #ffc93c">'
+  . '<div style="color:#ffc93c;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase">Brico\'Go</div>'
+  . '<div style="color:#ffffff;font-size:22px;font-weight:700;margin-top:6px">Nouvelle demande de devis</div>'
+  . '<div style="color:#a9a8b4;font-size:13px;margin-top:4px">Reçue le ' . $h($date) . '</div>'
+  . '</td></tr>'
+  // Objet
+  . '<tr><td style="padding:24px 28px 8px">'
+  . '<div style="display:inline-block;background:#fff4d6;color:#7a5500;font-size:13px;font-weight:700;padding:6px 12px;border-radius:20px">' . $h($objet) . '</div>'
+  . '</td></tr>'
+  // Coordonnées
+  . '<tr><td style="padding:8px 28px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+  . $ligne('Nom', $h($nom))
+  . $ligne('Téléphone', '<a href="tel:' . $h($telLien) . '" style="color:#1a1a1a;text-decoration:none">' . $h($tel) . '</a>')
+  . $ligne('Email', '<a href="mailto:' . $h($email) . '" style="color:#1a1a1a;text-decoration:none">' . $h($email) . '</a>')
+  . '</table></td></tr>'
+  // Message
+  . '<tr><td style="padding:16px 28px 8px">'
+  . '<div style="color:#8a8578;font-size:13px;margin-bottom:8px">Message</div>'
+  . '<div style="background:#f8f7f3;border-left:4px solid #ffc93c;border-radius:8px;padding:16px 18px;color:#1a1a1a;font-size:15px;line-height:1.6">'
+  . nl2br($h($message)) . '</div>'
+  . '</td></tr>'
+  // Boutons
+  . '<tr><td style="padding:20px 28px 28px">'
+  . '<a href="' . $h($mailLien) . '" style="display:inline-block;background:#ffc93c;color:#1a1206;font-size:15px;font-weight:700;text-decoration:none;padding:12px 22px;border-radius:24px;margin:0 8px 8px 0">Répondre au client</a>'
+  . '<a href="tel:' . $h($telLien) . '" style="display:inline-block;background:#0b0b0e;color:#ffffff;font-size:15px;font-weight:700;text-decoration:none;padding:12px 22px;border-radius:24px;margin:0 8px 8px 0">Appeler ' . $h($tel) . '</a>'
+  . '</td></tr>'
+  // Pied
+  . '<tr><td style="background:#f8f7f3;padding:14px 28px;color:#8a8578;font-size:12px">'
+  . 'Envoyé depuis le formulaire de ' . $h($domaine) . '. Le bouton « Répondre » de ta messagerie écrit directement au client.'
+  . '</td></tr>'
+  . '</table></td></tr></table></body></html>';
 
 $envoye = false;
 
@@ -113,7 +164,7 @@ if (defined('SMTP_UTILISATEUR') && SMTP_UTILISATEUR !== '') {
         $mail->Subject = $sujet;
         // Version HTML + texte, comme un mail envoyé depuis le webmail
         $mail->isHTML(true);
-        $mail->Body    = '<p>' . nl2br(htmlspecialchars($corps, ENT_QUOTES, 'UTF-8')) . '</p>';
+        $mail->Body    = $corpsHtml;
         $mail->AltBody = $corps;
         $mail->send();
         $envoye = true;
