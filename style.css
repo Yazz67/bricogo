@@ -341,6 +341,7 @@ h1, h2, h3 { font-family: var(--font-display); letter-spacing: -.03em; line-heig
 .form-foot { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; margin-top: 4px; }
 .form .btn[disabled] { opacity: .7; pointer-events: none; }
 #form-status { font-size: .94rem; color: var(--muted); }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 #form-status.ok { color: #3ddc84; }
 #form-status.err { color: #ff7b7b; }
 

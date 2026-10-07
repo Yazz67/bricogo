@@ -92,7 +92,7 @@ form.addEventListener('submit', function (e) {
     e.preventDefault();
 
     let valid = true;
-    form.querySelectorAll('input, textarea').forEach(field => {
+    form.querySelectorAll('.field input, .field textarea').forEach(field => {
         const ok = field.checkValidity();
         field.closest('.field').classList.toggle('invalid', !ok);
         if (!ok && valid) { field.focus(); valid = false; }
@@ -108,22 +108,39 @@ form.addEventListener('submit', function (e) {
     status.className = '';
     status.textContent = 'Envoi en cours…';
 
-    emailjs.sendForm('service_l0zgtc9', 'template_200649d', this)
-        .then(() => {
+    fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'X-Requested-With': 'fetch' }
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (!data.ok) throw new Error(data.message);
             status.className = 'ok';
-            status.textContent = 'Message envoyé avec succès ! Nous vous répondons rapidement.';
+            status.textContent = data.message;
             form.reset();
         })
-        .catch(() => {
+        .catch(err => {
             status.className = 'err';
-            status.textContent = "Erreur lors de l'envoi. Appelez-nous au 07 81 56 05 38.";
+            status.textContent = err instanceof SyntaxError || err instanceof TypeError || !err.message
+                ? "Erreur lors de l'envoi. Appelez-nous au 07 81 56 05 38."
+                : err.message;
         })
         .finally(() => { button.disabled = false; });
 });
 
-form.querySelectorAll('input, textarea').forEach(field => {
+form.querySelectorAll('.field input, .field textarea').forEach(field => {
     field.addEventListener('input', () => field.closest('.field').classList.remove('invalid'));
 });
+
+/* Retour après un envoi sans JavaScript */
+const envoi = new URLSearchParams(location.search).get('envoi');
+if (envoi) {
+    status.className = envoi === 'ok' ? 'ok' : 'err';
+    status.textContent = envoi === 'ok'
+        ? 'Message envoyé avec succès ! Nous vous répondons rapidement.'
+        : "Erreur lors de l'envoi. Appelez-nous au 07 81 56 05 38.";
+}
 
 /* ===========================
    FOOTER
