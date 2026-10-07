@@ -1,153 +1,131 @@
-const animate = ScrollReveal({
-    distance: '60px',
-    duration: 1500,
-    delay: 200,
-    reset: false
+/* ===========================
+   NAVBAR : masquage au scroll + lien actif
+=========================== */
+const header = document.getElementById('header');
+const hamburger = document.getElementById('hamburger');
+const navbar = document.getElementById('navbar');
+
+let lastScroll = window.scrollY;
+window.addEventListener('scroll', () => {
+    const current = window.scrollY;
+    const menuOpen = navbar.classList.contains('active');
+    header.classList.toggle('hide', !menuOpen && current > lastScroll && current > 120);
+    lastScroll = current;
+}, { passive: true });
+
+function closeMenu() {
+    hamburger.classList.remove('active');
+    navbar.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+}
+
+hamburger.addEventListener('click', () => {
+    const open = navbar.classList.toggle('active');
+    hamburger.classList.toggle('active', open);
+    hamburger.setAttribute('aria-expanded', String(open));
 });
 
-/* ===========================
-   NAVBAR
-=========================== */
-animate.reveal('.header', { origin: 'top' });
+navbar.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+document.addEventListener('click', e => {
+    if (!header.contains(e.target)) closeMenu();
+});
 
-document.addEventListener('DOMContentLoaded', () => {
-    const header = document.querySelector('.header');
-    if (!header) return;
-
-    let lastScroll = window.scrollY;
-
-    window.addEventListener('scroll', () => {
-        const currentScroll = window.scrollY;
-
-        if (currentScroll > lastScroll && currentScroll > 80) {
-            header.classList.remove('show');
-            header.classList.add('hide');
-        } else {
-            header.classList.remove('hide');
-            header.classList.add('show');
-        }
-
-        lastScroll = currentScroll;
+const navLinks = [...navbar.querySelectorAll('a[href^="#"]:not(.nav-links-cta)')];
+const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
     });
-});
-
-
-
-
-
-
+}, { rootMargin: '-45% 0px -50% 0px' });
+document.querySelectorAll('main section[id]').forEach(s => sectionObserver.observe(s));
 
 /* ===========================
-   HERO
+   APPARITIONS AU SCROLL
 =========================== */
-animate.reveal('.hero h2', { origin: 'left' });
-animate.reveal('.hero p', { origin: 'bottom', delay: 300 });
+const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in');
+        revealObserver.unobserve(entry.target);
+    });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
-animate.reveal('.glass-btn', { origin: 'bottom', delay: 400 });
-animate.reveal('.hero-actions .pill', { origin: 'bottom', delay: 500 });
-
-animate.reveal('.hero-meta span', { origin: 'bottom', interval: 120 });
-
-animate.reveal('.hero-card', { origin: 'right', delay: 300 });
-animate.reveal('.hero-card-left', { origin: 'left', delay: 400 });
-animate.reveal('.hero-illustration', { origin: 'right', delay: 500 });
-
-
-/* ===========================
-   SERVICES
-=========================== */
-animate.reveal('#services .section-header', { origin: 'top' });
-
-animate.reveal('#services .card', {
-    origin: 'bottom',
-    interval: 120
+document.querySelectorAll('.reveal').forEach(el => {
+    // décalage en cascade entre éléments frères
+    const siblings = [...el.parentElement.children].filter(c => c.classList.contains('reveal'));
+    el.style.setProperty('--d', `${Math.min(siblings.indexOf(el), 6) * 0.08}s`);
+    revealObserver.observe(el);
 });
 
+/* ===========================
+   LIQUID GLASS : reflet au curseur + inclinaison
+=========================== */
+const finePointer = window.matchMedia('(pointer: fine)').matches;
+if (finePointer) {
+    document.querySelectorAll('.glass').forEach(el => {
+        el.addEventListener('pointermove', e => {
+            const r = el.getBoundingClientRect();
+            el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+            el.style.setProperty('--my', `${e.clientY - r.top}px`);
+        });
+    });
+
+    const tilt = document.querySelector('.tilt');
+    if (tilt) {
+        tilt.addEventListener('pointermove', e => {
+            const r = tilt.getBoundingClientRect();
+            const x = (e.clientX - r.left) / r.width - 0.5;
+            const y = (e.clientY - r.top) / r.height - 0.5;
+            tilt.style.transform = `perspective(900px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+        });
+        tilt.addEventListener('pointerleave', () => { tilt.style.transform = ''; });
+    }
+}
 
 /* ===========================
-   POURQUOI NOUS CHOISIR
+   FORMULAIRE (EmailJS)
 =========================== */
-animate.reveal('#why .section-header', { origin: 'top' });
+const form = document.getElementById('contact-form');
+const status = document.getElementById('form-status');
 
-animate.reveal('#why .card', {
-    origin: 'bottom',
-    interval: 120
-});
-
-document.getElementById("contact-form").addEventListener("submit", function(e) {
+form.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    emailjs.sendForm("service_l0zgtc9", "template_200649d", this)
+    let valid = true;
+    form.querySelectorAll('input, textarea').forEach(field => {
+        const ok = field.checkValidity();
+        field.closest('.field').classList.toggle('invalid', !ok);
+        if (!ok && valid) { field.focus(); valid = false; }
+    });
+    if (!valid) {
+        status.className = 'err';
+        status.textContent = 'Merci de remplir correctement tous les champs.';
+        return;
+    }
+
+    const button = form.querySelector('button[type="submit"]');
+    button.disabled = true;
+    status.className = '';
+    status.textContent = 'Envoi en cours…';
+
+    emailjs.sendForm('service_l0zgtc9', 'template_200649d', this)
         .then(() => {
-            document.getElementById("form-status").innerText = "Message envoyé avec succès !";
-            this.reset();
+            status.className = 'ok';
+            status.textContent = 'Message envoyé avec succès ! Nous vous répondons rapidement.';
+            form.reset();
         })
         .catch(() => {
-            document.getElementById("form-status").innerText = "Erreur lors de l’envoi.";
-        });
+            status.className = 'err';
+            status.textContent = "Erreur lors de l'envoi. Appelez-nous au 07 81 56 05 38.";
+        })
+        .finally(() => { button.disabled = false; });
 });
 
-/* ===========================
-   ZONE D’INTERVENTION
-=========================== */
-animate.reveal('#zone .section-header', { origin: 'top' });
-
-animate.reveal('.zone-map-card', { origin: 'left', delay: 300 });
-animate.reveal('.zone-info', { origin: 'right', delay: 400 });
-
-animate.reveal('.zone-tag', { origin: 'bottom', interval: 100 });
-animate.reveal('.zone-badges span', { origin: 'bottom', interval: 120 });
-
-
-/* ===========================
-   CONTACT
-=========================== */
-animate.reveal('#contact .section-header', { origin: 'top' });
-
-animate.reveal('#contact form', { origin: 'left', delay: 300 });
-animate.reveal('.contact-infos', { origin: 'right', delay: 400 });
-
-animate.reveal('.contact-badges .badge', {
-    origin: 'bottom',
-    interval: 120,
-    delay: 500
+form.querySelectorAll('input, textarea').forEach(field => {
+    field.addEventListener('input', () => field.closest('.field').classList.remove('invalid'));
 });
-
 
 /* ===========================
    FOOTER
 =========================== */
-animate.reveal('.footer-col', { origin: 'bottom', interval: 120 });
-animate.reveal('.footer-bottom', { origin: 'bottom', delay: 300 });
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    const header = document.querySelector('.header');
-    if (!header) {
-        console.log('Header non trouvé');
-        return;
-    }
-
-    let lastScroll = window.scrollY;
-
-    window.addEventListener('scroll', () => {
-        const currentScroll = window.scrollY;
-
-        if (currentScroll > lastScroll && currentScroll > 80) {
-            header.classList.add('hide');   // on descend
-        } else {
-            header.classList.remove('hide'); // on remonte
-        }
-
-        lastScroll = currentScroll;
-    });
-});
-
-
-const hamburger = document.getElementById("hamburger");
-const navbar = document.getElementById("navbar");
-
-hamburger.addEventListener("click", () => {
-    hamburger.classList.toggle("active");
-    navbar.classList.toggle("active");
-});
+document.getElementById('year').textContent = new Date().getFullYear();
