@@ -95,7 +95,6 @@ $corps = "NOUVELLE DEMANDE DE DEVIS\n"
 // Version HTML mise en page (styles en ligne, compatibles avec toutes les messageries)
 $h = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
 $telLien  = preg_replace('/[^0-9+]/', '', $tel);
-$mailLien = 'mailto:' . rawurlencode($email) . '?subject=' . rawurlencode("Re : $sujet");
 $ligne = fn(string $label, string $valeur): string =>
     '<tr><td style="padding:10px 0;border-bottom:1px solid #eeeae2;color:#8a8578;font-size:13px;width:110px;vertical-align:top">'
     . $label . '</td><td style="padding:10px 0;border-bottom:1px solid #eeeae2;color:#1a1a1a;font-size:15px;font-weight:600">'
@@ -128,8 +127,7 @@ $corpsHtml = '<!doctype html><html lang="fr"><body style="margin:0;padding:0;bac
   . '</td></tr>'
   // Boutons
   . '<tr><td style="padding:20px 28px 28px">'
-  . '<a href="' . $h($mailLien) . '" style="display:inline-block;background:#ffc93c;color:#1a1206;font-size:15px;font-weight:700;text-decoration:none;padding:12px 22px;border-radius:24px;margin:0 8px 8px 0">Répondre au client</a>'
-  . '<a href="tel:' . $h($telLien) . '" style="display:inline-block;background:#0b0b0e;color:#ffffff;font-size:15px;font-weight:700;text-decoration:none;padding:12px 22px;border-radius:24px;margin:0 8px 8px 0">Appeler ' . $h($tel) . '</a>'
+  . '<a href="tel:' . $h($telLien) . '" style="display:inline-block;background:#ffc93c;color:#1a1206;font-size:15px;font-weight:700;text-decoration:none;padding:12px 22px;border-radius:24px;margin:0 8px 8px 0">Appeler ' . $h($tel) . '</a>'
   . '</td></tr>'
   // Pied
   . '<tr><td style="background:#f8f7f3;padding:14px 28px;color:#8a8578;font-size:12px">'
