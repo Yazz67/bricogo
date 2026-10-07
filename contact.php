@@ -4,11 +4,13 @@
 =========================== */
 
 // Adresse qui reçoit les demandes de devis
-const DESTINATAIRE = 'pro.dig201@passmail.net';
+const DESTINATAIRE = 'd.dogan67@icloud.com';
 
-// Expéditeur technique : une adresse de ton domaine (ex. no-reply@tondomaine.fr).
-// Laisser vide pour utiliser automatiquement no-reply@<domaine du site>.
-const EXPEDITEUR = '';
+// Envoi authentifié (recommandé) : remplir contact-config.php
+// (voir contact-config.exemple.php). Sans ce fichier, envoi simple via mail().
+if (is_file(__DIR__ . '/contact-config.php')) {
+    require __DIR__ . '/contact-config.php';
+}
 
 // Délai minimum entre deux envois depuis la même adresse IP (secondes)
 const DELAI_ANTI_SPAM = 30;
@@ -66,7 +68,6 @@ if (is_file($verrou) && time() - filemtime($verrou) < DELAI_ANTI_SPAM) {
 }
 
 $domaine = preg_replace('/^www\./', '', strtolower(explode(':', $_SERVER['HTTP_HOST'] ?? 'localhost')[0]));
-$expediteur = EXPEDITEUR !== '' ? EXPEDITEUR : 'no-reply@' . $domaine;
 
 $sujet = "Demande de devis : $objet";
 $corps = "Nouvelle demande depuis le site Brico'Go\n"
@@ -79,22 +80,51 @@ $corps = "Nouvelle demande depuis le site Brico'Go\n"
        . "----------------------------------------\n"
        . 'Envoyé le ' . date('d/m/Y à H:i') . " depuis $domaine\n";
 
-$entetes = [
-    'From'                      => "Site Brico'Go <$expediteur>",
-    'Reply-To'                  => "$nom <$email>",
-    'MIME-Version'              => '1.0',
-    'Content-Type'              => 'text/plain; charset=UTF-8',
-    'Content-Transfer-Encoding' => '8bit',
-    'X-Mailer'                  => 'PHP',
-];
+if (defined('SMTP_UTILISATEUR') && SMTP_UTILISATEUR !== '') {
+    // Envoi SMTP authentifié avec la boîte mail du domaine
+    require __DIR__ . '/lib/PHPMailer/Exception.php';
+    require __DIR__ . '/lib/PHPMailer/PHPMailer.php';
+    require __DIR__ . '/lib/PHPMailer/SMTP.php';
 
-$envoye = mail(
-    DESTINATAIRE,
-    '=?UTF-8?B?' . base64_encode($sujet) . '?=',
-    $corps,
-    $entetes,
-    '-f' . $expediteur
-);
+    $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host       = SMTP_SERVEUR;
+        $mail->SMTPAuth   = true;
+        $mail->Username   = SMTP_UTILISATEUR;
+        $mail->Password   = SMTP_MOT_DE_PASSE;
+        $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port       = 465;
+        $mail->CharSet    = 'UTF-8';
+        $mail->setFrom(SMTP_UTILISATEUR, "Site Brico'Go");
+        $mail->addAddress(DESTINATAIRE);
+        $mail->addReplyTo($email, $nom);
+        $mail->Subject = $sujet;
+        $mail->Body    = $corps;
+        $mail->send();
+        $envoye = true;
+    } catch (Throwable $e) {
+        error_log('Brico\'Go contact SMTP : ' . $mail->ErrorInfo);
+        $envoye = false;
+    }
+} else {
+    // Envoi simple via le serveur (moins fiable : peut finir en spam)
+    $expediteur = 'no-reply@' . $domaine;
+    $entetes = [
+        'From'                      => "Site Brico'Go <$expediteur>",
+        'Reply-To'                  => "$nom <$email>",
+        'MIME-Version'              => '1.0',
+        'Content-Type'              => 'text/plain; charset=UTF-8',
+        'Content-Transfer-Encoding' => '8bit',
+    ];
+    $envoye = mail(
+        DESTINATAIRE,
+        '=?UTF-8?B?' . base64_encode($sujet) . '?=',
+        $corps,
+        $entetes,
+        '-f' . $expediteur
+    );
+}
 
 if (!$envoye) {
     repondre(500, false, "Erreur lors de l'envoi. Appelez-nous au 07 81 56 05 38.");
