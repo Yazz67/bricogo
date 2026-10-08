@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moon Lounge — Chicha Lounge</title>
+  <meta name="description" content="Moon Lounge, votre chicha lounge : chichas premium, cocktails, mocktails, boissons et desserts dans une ambiance feutrée.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Fond étoilé -->
+  <canvas id="stars" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <header class="nav" id="nav">
+    <a href="#accueil" class="nav__logo">
+      <span class="nav__moon"></span>
+      <span>Moon <em>Lounge</em></span>
+    </a>
+    <nav class="nav__links" id="navLinks">
+      <a href="#accueil">Accueil</a>
+      <a href="#apropos">Le Lounge</a>
+      <a href="#menu">Menu</a>
+      <a href="#ambiance">Ambiance</a>
+      <a href="#contact">Contact</a>
+      <a href="#contact" class="btn btn--small">Réserver</a>
+    </nav>
+    <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="accueil">
+    <div class="hero__moon" aria-hidden="true">
+      <div class="crater c1"></div><div class="crater c2"></div><div class="crater c3"></div>
+    </div>
+    <div class="smoke" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="hero__content">
+      <p class="hero__kicker">Chicha · Cocktails · Desserts</p>
+      <h1>Moon <span>Lounge</span></h1>
+      <p class="hero__text">Laissez-vous porter par la nuit. Des chichas premium, des cocktails signature et une ambiance feutrée sous la lune.</p>
+      <div class="hero__actions">
+        <a href="#menu" class="btn">Découvrir la carte</a>
+        <a href="#contact" class="btn btn--ghost">Réserver une table</a>
+      </div>
+    </div>
+    <a href="#apropos" class="hero__scroll" aria-label="Défiler vers le bas"></a>
+  </section>
+
+  <!-- À propos -->
+  <section class="section about" id="apropos">
+    <div class="container about__grid">
+      <div class="about__text reveal">
+        <p class="section__kicker">Bienvenue</p>
+        <h2>Une parenthèse <em>lunaire</em></h2>
+        <p>Au Moon Lounge, chaque soirée est une escapade. Installez-vous dans nos banquettes moelleuses, choisissez votre arôme parmi une large sélection de tabacs premium et laissez nos chichas-men préparer une tête sur mesure.</p>
+        <p>Côté bar, nos mixologues créent des cocktails et mocktails signature, à accompagner de nos desserts maison.</p>
+      </div>
+      <div class="about__features reveal">
+        <div class="feature">
+          <div class="feature__icon">💨</div>
+          <h3>Chichas premium</h3>
+          <p>Tabacs sélectionnés, têtes en terre cuite et charbon naturel.</p>
+        </div>
+        <div class="feature">
+          <div class="feature__icon">🍸</div>
+          <h3>Cocktails signature</h3>
+          <p>Créations maison avec ou sans alcool, fruits frais.</p>
+        </div>
+        <div class="feature">
+          <div class="feature__icon">🍰</div>
+          <h3>Desserts maison</h3>
+          <p>Gourmandises préparées chaque jour pour finir en douceur.</p>
+        </div>
+        <div class="feature">
+          <div class="feature__icon">🎶</div>
+          <h3>Ambiance</h3>
+          <p>DJ le week-end, écrans pour les matchs, salon privatisable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu -->
+  <section class="section menu" id="menu">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="section__kicker">Notre carte</p>
+        <h2>Le <em>Menu</em></h2>
+        <p class="section__sub">Choisissez une catégorie pour découvrir nos produits.</p>
+      </div>
+
+      <div class="tabs reveal" role="tablist" id="tabs"></div>
+      <div class="menu__panel" id="menuPanel" role="tabpanel" aria-live="polite"></div>
+      <p class="menu__note">Prix TTC, service compris. L'abus d'alcool est dangereux pour la santé, à consommer avec modération. Fumer nuit gravement à votre santé et à celle de votre entourage. Interdit aux moins de 18 ans.</p>
+    </div>
+  </section>
+
+  <!-- Formules -->
+  <section class="section offers">
+    <div class="container offers__grid">
+      <div class="offer reveal">
+        <p class="offer__tag">Happy Hour</p>
+        <h3>17h – 20h</h3>
+        <p>-20 % sur tous les cocktails et mocktails, du lundi au jeudi.</p>
+      </div>
+      <div class="offer offer--featured reveal">
+        <p class="offer__tag">Formule Moon</p>
+        <h3>29 €</h3>
+        <p>1 chicha classique + 1 cocktail ou mocktail au choix + 1 dessert.</p>
+      </div>
+      <div class="offer reveal">
+        <p class="offer__tag">Anniversaire</p>
+        <h3>Sur réservation</h3>
+        <p>Salon privatisé, décoration et gâteau offert à partir de 8 personnes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ambiance -->
+  <section class="section ambiance" id="ambiance">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="section__kicker">L'expérience</p>
+        <h2>L'<em>ambiance</em> Moon</h2>
+      </div>
+      <div class="gallery">
+        <div class="gallery__item g1 reveal"><span>Salon principal</span></div>
+        <div class="gallery__item g2 reveal"><span>Bar à cocktails</span></div>
+        <div class="gallery__item g3 reveal"><span>Terrasse</span></div>
+        <div class="gallery__item g4 reveal"><span>Salon VIP</span></div>
+        <div class="gallery__item g5 reveal"><span>Soirées DJ</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section contact" id="contact">
+    <div class="container contact__grid">
+      <div class="contact__info reveal">
+        <p class="section__kicker">Nous trouver</p>
+        <h2>Réservez votre <em>soirée</em></h2>
+        <ul class="contact__list">
+          <li><span>📍</span> 12 rue de la Lune, 75000 Paris</li>
+          <li><span>📞</span> <a href="tel:+33100000000">01 00 00 00 00</a></li>
+          <li><span>✉️</span> <a href="mailto:contact@moonlounge.fr">contact@moonlounge.fr</a></li>
+          <li><span>📸</span> <a href="#">@moonlounge</a></li>
+        </ul>
+        <div class="hours">
+          <h3>Horaires</h3>
+          <div class="hours__row"><span>Lundi – Jeudi</span><span>17h – 02h</span></div>
+          <div class="hours__row"><span>Vendredi – Samedi</span><span>17h – 04h</span></div>
+          <div class="hours__row"><span>Dimanche</span><span>16h – 02h</span></div>
+        </div>
+      </div>
+
+      <form class="form reveal" id="resaForm" novalidate>
+        <h3>Demande de réservation</h3>
+        <div class="form__row">
+          <label>Nom<input type="text" name="nom" required placeholder="Votre nom"></label>
+          <label>Téléphone<input type="tel" name="tel" required placeholder="06 00 00 00 00"></label>
+        </div>
+        <div class="form__row">
+          <label>Date<input type="date" name="date" required></label>
+          <label>Heure<input type="time" name="heure" required></label>
+        </div>
+        <label>Nombre de personnes
+          <select name="personnes">
+            <option>2</option><option>3</option><option>4</option><option>5</option>
+            <option>6</option><option>7</option><option>8+</option>
+          </select>
+        </label>
+        <label>Message<textarea name="message" rows="3" placeholder="Anniversaire, salon VIP, demande particulière…"></textarea></label>
+        <button type="submit" class="btn btn--full">Envoyer la demande</button>
+        <p class="form__status" id="formStatus" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <a href="#accueil" class="nav__logo">
+      <span class="nav__moon"></span>
+      <span>Moon <em>Lounge</em></span>
+    </a>
+    <p>© <span id="year"></span> Moon Lounge — Tous droits réservés.</p>
+    <p class="footer__legal">Établissement interdit aux mineurs. À consommer avec modération.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
