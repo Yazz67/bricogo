@@ -122,7 +122,7 @@ html::-webkit-scrollbar-thumb { background: linear-gradient(var(--amber), var(--
   display: inline-flex; align-items: center; justify-content: center; gap: .6em;
   padding: 15px 24px; border-radius: 999px;
   font-weight: 600; font-size: 1rem; letter-spacing: -.01em; white-space: nowrap;
-  transition: transform .3s var(--ease), box-shadow .3s var(--ease), background .3s;
+  transition: transform .3s var(--ease), translate .35s var(--ease), box-shadow .3s var(--ease), background .3s;
 }
 .btn:hover { transform: translateY(-2px); }
 .btn:active { transform: translateY(0) scale(.98); }
@@ -130,6 +130,7 @@ html::-webkit-scrollbar-thumb { background: linear-gradient(var(--amber), var(--
 .btn:hover .ic { transform: translateX(3px); }
 
 .btn-primary {
+  position: relative; overflow: hidden; isolation: isolate;
   color: #1a1206;
   background: linear-gradient(180deg, #ffd960, var(--amber) 45%, var(--amber-2));
   box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -2px 6px rgba(180,80,0,.35), 0 10px 30px -6px var(--amber-glow);
@@ -283,7 +284,7 @@ h1, h2, h3 { font-family: var(--font-display); letter-spacing: -.03em; line-heig
 .card-cta .card-ic { background: rgba(255,255,255,.08); color: var(--amber); box-shadow: inset 0 1px 0 rgba(255,255,255,.2); }
 .card-arrow {
   margin-left: auto; flex: none; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%;
-  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); transition: background .3s, color .3s, transform .3s var(--ease);
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); transition: background .3s, color .3s, transform .3s var(--ease), translate .35s var(--ease);
 }
 .card-cta:hover .card-arrow { background: var(--amber); color: #1a1206; transform: rotate(-45deg); }
 
@@ -309,7 +310,7 @@ h1, h2, h3 { font-family: var(--font-display); letter-spacing: -.03em; line-heig
 
 /* Zone */
 .zone { display: grid; grid-template-columns: 1.5fr 1fr; border-radius: var(--radius-lg); overflow: hidden; padding: 10px; gap: 10px; }
-.zone-map { border-radius: calc(var(--radius-lg) - 8px); overflow: hidden; }
+.zone-map { position: relative; border-radius: calc(var(--radius-lg) - 8px); overflow: hidden; }
 .zone-map img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
 .zone:hover .zone-map img { transform: scale(1.04); }
 .zone-info { padding: 30px; display: flex; flex-direction: column; justify-content: center; gap: 26px; }
@@ -365,6 +366,7 @@ a.contact-line:hover { background: rgba(255,255,255,.06); }
 
 /* Bouton flottant mobile */
 .fab {
+  transition: translate .35s var(--ease);
   position: fixed; right: 18px; bottom: 18px; z-index: 90; display: none;
   width: 58px; height: 58px; border-radius: 50%; place-items: center; font-size: 1.4rem; color: #1a1206;
   background: linear-gradient(160deg, #ffe07a, var(--amber) 50%, var(--amber-2));
@@ -376,6 +378,171 @@ a.contact-line:hover { background: rgba(255,255,255,.06); }
 ========================================================= */
 .reveal { opacity: 0; transform: translateY(28px); filter: blur(6px); transition: opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease); transition-delay: var(--d, 0s); }
 .reveal.in { opacity: 1; transform: none; filter: none; }
+
+/* =========================================================
+   MOTION DESIGN
+========================================================= */
+
+/* --- Intro : l'éclair frappe, onde de choc, rideau --- */
+.intro { display: none; }
+.has-intro .intro {
+  position: fixed; inset: 0; z-index: 300; display: grid; place-items: center; overflow: hidden;
+  background: radial-gradient(800px 500px at 50% 45%, #17140c, var(--bg) 70%);
+  clip-path: inset(0 0 0 0);
+  animation: intro-out .85s cubic-bezier(.76,0,.24,1) 1.25s forwards;
+}
+.intro-mark { position: relative; display: grid; justify-items: center; gap: 18px; }
+.intro-bolt {
+  width: 96px; filter: drop-shadow(0 12px 34px var(--amber-glow));
+  animation: bolt-strike 1s cubic-bezier(.5,0,.5,1) both;
+}
+.intro-word {
+  font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; letter-spacing: .02em;
+  background: linear-gradient(100deg, #fff1b8, var(--amber) 40%, var(--amber-2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: intro-word .7s var(--ease) .55s both;
+}
+.intro-flash {
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 42%, rgba(255,220,120,.9), rgba(255,150,30,.25) 30%, transparent 60%);
+  opacity: 0; animation: intro-flash .6s ease-out .42s;
+}
+.intro-ring {
+  position: absolute; left: 50%; top: 42%; width: 120px; height: 120px; margin: -60px 0 0 -60px;
+  border-radius: 50%; border: 2px solid var(--amber); box-shadow: 0 0 30px var(--amber-glow), inset 0 0 30px var(--amber-glow);
+  opacity: 0; animation: intro-ring 1s cubic-bezier(.2,.8,.2,1) .42s;
+}
+@keyframes bolt-strike {
+  0%   { transform: translateY(-70vh) scale(.7) rotate(-14deg); opacity: 0; }
+  12%  { opacity: 1; }
+  45%  { transform: translateY(0) scale(1.08, .88) rotate(0); }
+  62%  { transform: translateY(-16px) scale(.95, 1.07); }
+  80%  { transform: translateY(0) scale(1.02, .98); }
+  100% { transform: none; }
+}
+@keyframes intro-word { from { opacity: 0; transform: translateY(14px); letter-spacing: .4em; filter: blur(6px); } }
+@keyframes intro-flash { 0% { opacity: 0; } 20% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes intro-ring { from { opacity: 1; transform: scale(.3); } to { opacity: 0; transform: scale(9); } }
+@keyframes intro-out { to { clip-path: inset(0 0 100% 0); } }
+
+/* les apparitions du hero attendent la fin de l'intro */
+.has-intro .hero { --intro: 1.45s; }
+.hero .reveal { transition-delay: calc(var(--d, 0s) + var(--intro, 0s)); }
+
+/* --- Titre du hero : mots qui montent hors d'un masque --- */
+.split .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .1em; margin-bottom: -.1em; }
+.split .w > span {
+  display: inline-block; transform: translateY(110%) rotate(5deg); transform-origin: left bottom;
+  transition: transform 1.1s cubic-bezier(.16,1,.3,1);
+  transition-delay: calc(var(--wi, 0) * 70ms + .1s + var(--intro, 0s));
+}
+.split.in .w > span { transform: none; }
+.split .grad { background: none; color: inherit; }
+.split .grad .w > span {
+  background: linear-gradient(100deg, #fff1b8, var(--amber) 40%, var(--amber-2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+/* --- Barre de progression --- */
+.progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 120; pointer-events: none;
+  background: linear-gradient(90deg, var(--amber-2), var(--amber), #fff1b8);
+  box-shadow: 0 0 12px var(--amber-glow);
+  transform: scaleX(0); transform-origin: left;
+}
+
+/* --- Parallaxe du fond + halo qui suit le curseur --- */
+.orb-1 { translate: 0 calc(var(--sy, 0) * -0.18px); }
+.orb-2 { translate: 0 calc(var(--sy, 0) * -0.08px); }
+.orb-3 { translate: 0 calc(var(--sy, 0) * -0.3px); }
+.cursor-glow {
+  position: absolute; left: 0; top: 0; width: 520px; height: 520px; margin: -260px 0 0 -260px;
+  border-radius: 50%; opacity: 0; transition: opacity .6s;
+  background: radial-gradient(circle, rgba(255,190,60,.13), transparent 62%);
+  will-change: transform;
+}
+.cursor-glow.on { opacity: 1; }
+
+/* --- Cartes flottantes du hero : parallaxe souris --- */
+.float-1, .float-2 { transition: translate .8s var(--ease); }
+.float-1 { translate: calc(var(--px, 0) * -34px) calc(var(--py, 0) * -26px); }
+.float-2 { translate: calc(var(--px, 0) * 28px) calc(var(--py, 0) * 22px); }
+
+/* --- Reflet qui balaie le bouton principal --- */
+.btn-primary::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.55) 50%, transparent 70%);
+  transform: translateX(-120%);
+}
+.btn-primary:hover::after { transform: translateX(120%); transition: transform .8s var(--ease); }
+
+/* --- Bandeau : réagit à la vitesse du scroll --- */
+.marquee span, .marquee i { transform: skewX(var(--skew, 0deg)); transition: transform .2s linear; }
+
+/* --- Apparitions plus marquées --- */
+.bento .reveal:not(.in), .steps .reveal:not(.in) { transform: perspective(900px) translateY(48px) rotateX(12deg) scale(.96); }
+.zone.reveal, .form.reveal { transition: opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease), clip-path 1.2s cubic-bezier(.76,0,.24,1); }
+.zone.reveal:not(.in), .form.reveal:not(.in) { clip-path: inset(8% 6% 8% 6% round var(--radius-lg)); }
+.zone.reveal.in, .form.reveal.in { clip-path: inset(0 0 0 0 round var(--radius-lg)); }
+
+/* étiquettes de section : reflet à l'apparition */
+.section-tag { position: relative; overflow: hidden; }
+.section-tag::after {
+  content: ""; position: absolute; inset: 0; transform: translateX(-120%);
+  background: linear-gradient(110deg, transparent 30%, rgba(255,230,160,.5) 50%, transparent 70%);
+}
+.in .section-tag::after { animation: tag-shine 1.3s var(--ease) .5s; }
+@keyframes tag-shine { to { transform: translateX(120%); } }
+
+/* icônes : petit rebond au survol */
+.card:hover .card-ic .ic, .feature:hover .card-ic .ic, a.contact-line:hover .card-ic .ic, .float-card:hover .float-ic .ic {
+  animation: icon-pop .7s var(--ease);
+}
+@keyframes icon-pop {
+  30% { transform: scale(1.22) rotate(-12deg); }
+  60% { transform: scale(.94) rotate(7deg); }
+}
+
+/* --- Étapes : un fil lumineux se trace entre elles --- */
+.steps { position: relative; isolation: isolate; }
+.steps::before {
+  content: ""; position: absolute; z-index: -1; left: 6%; right: 6%; top: 54px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--amber) 15%, var(--amber-2) 85%, transparent);
+  box-shadow: 0 0 16px var(--amber-glow);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 1.8s cubic-bezier(.65,0,.35,1) .3s;
+}
+.steps.in::before { transform: scaleX(1); }
+.steps.in .step-num { animation: num-glow 1s var(--ease) both; }
+.steps.in .step:nth-child(1) .step-num { animation-delay: .4s; }
+.steps.in .step:nth-child(2) .step-num { animation-delay: 1s; }
+.steps.in .step:nth-child(3) .step-num { animation-delay: 1.6s; }
+@keyframes num-glow {
+  40% { filter: drop-shadow(0 0 18px var(--amber)); transform: scale(1.12); }
+  100% { filter: none; transform: none; }
+}
+.step-num { display: inline-block; transform-origin: left center; }
+
+/* --- Carte : ondes radar sur Huttenheim --- */
+.zone-pings { position: absolute; inset: 0; pointer-events: none; transition: transform 1.2s var(--ease); }
+.zone:hover .zone-pings { transform: scale(1.04); }
+.zone-pings span, .zone-pings i {
+  position: absolute; left: var(--x, 74%); top: var(--y, 39%);
+  width: 60px; height: 60px; margin: -30px 0 0 -30px; border-radius: 50%;
+}
+.zone-pings span {
+  border: 2px solid var(--amber); box-shadow: 0 0 18px var(--amber-glow);
+  opacity: 0; animation: ping 3.6s cubic-bezier(.2,.6,.3,1) infinite;
+}
+.zone-pings span:nth-child(2) { animation-delay: 1.2s; }
+.zone-pings span:nth-child(3) { animation-delay: 2.4s; }
+.zone-pings i {
+  width: 14px; height: 14px; margin: -7px 0 0 -7px;
+  background: var(--amber); box-shadow: 0 0 0 4px rgba(255,201,60,.25), 0 0 24px var(--amber);
+  animation: pulse-dot 1.8s ease-in-out infinite;
+}
+@keyframes ping { 0% { opacity: .9; transform: scale(.2); } 100% { opacity: 0; transform: scale(4.5); } }
+@keyframes pulse-dot { 50% { transform: scale(1.3); } }
 
 /* =========================================================
    RESPONSIVE
@@ -407,6 +574,12 @@ a.contact-line:hover { background: rgba(255,255,255,.06); }
   .nav-links-cta { display: block; text-align: center; margin-top: 6px; color: #1a1206 !important; font-weight: 600;
     background: linear-gradient(180deg, #ffd960, var(--amber) 45%, var(--amber-2)) !important; }
   .steps { grid-template-columns: 1fr; }
+  .steps::before {
+    left: 50%; right: auto; top: 0; bottom: 0; width: 2px; height: auto;
+    background: linear-gradient(180deg, transparent, var(--amber) 10%, var(--amber-2) 90%, transparent);
+    transform: scaleY(0); transform-origin: top;
+  }
+  .steps.in::before { transform: scaleY(1); }
   .footer-inner { grid-template-columns: 1fr 1fr; }
   .footer-brand { grid-column: 1 / -1; }
   .fab { display: grid; }
@@ -434,6 +607,10 @@ a.contact-line:hover { background: rgba(255,255,255,.06); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .reveal { opacity: 1; transform: none; filter: none; }
+  .reveal:not(.in) { transform: none !important; clip-path: none !important; }
+  .split .w > span { transform: none; }
+  .steps::before { transform: none !important; }
+  .intro, .cursor-glow, .zone-pings span { display: none !important; }
   html { scroll-behavior: auto; }
 }
 

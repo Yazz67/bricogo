@@ -15,8 +15,29 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script>
+    try {
+      if (!sessionStorage.getItem('bg-intro') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('has-intro');
+        sessionStorage.setItem('bg-intro', '1');
+      }
+    } catch (e) {}
+  </script>
 </head>
 <body>
+
+<!-- Intro animée (1re visite de la session) -->
+<div class="intro" aria-hidden="true">
+  <span class="intro-flash"></span>
+  <span class="intro-ring"></span>
+  <div class="intro-mark">
+    <img src="img/icon.png" alt="" class="intro-bolt" width="188" height="227">
+    <span class="intro-word">Brico'Go</span>
+  </div>
+</div>
+
+<!-- Progression de lecture -->
+<div class="progress" aria-hidden="true"></div>
 
 <!-- Fond ambiant -->
 <div class="ambient" aria-hidden="true">
@@ -24,6 +45,7 @@
   <span class="orb orb-2"></span>
   <span class="orb orb-3"></span>
   <span class="grain"></span>
+  <span class="cursor-glow"></span>
 </div>
 
 <!-- SVG sprite -->
@@ -88,7 +110,7 @@
         Disponible 7j/7 · Huttenheim &amp; 20 km
       </span>
 
-      <h1 class="reveal">Votre homme à tout faire, <span class="grad">rapide et soigné.</span></h1>
+      <h1 class="split">Votre homme à tout faire, <span class="grad">rapide et soigné.</span></h1>
 
       <p class="lead reveal">
         Montage de meubles, petits travaux, peinture, plomberie, jardinage…
@@ -281,6 +303,7 @@
     <div class="zone glass glass-strong reveal">
       <div class="zone-map">
         <img src="img/location.png" alt="Carte de la zone d'intervention de Brico'Go autour de Huttenheim" loading="lazy" width="3508" height="2320">
+        <div class="zone-pings" aria-hidden="true"><span></span><span></span><span></span><i></i></div>
       </div>
       <div class="zone-info">
         <h3>Intervention dans Huttenheim et jusqu'à 20 km autour.</h3>

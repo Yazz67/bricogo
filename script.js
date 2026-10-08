@@ -83,6 +83,142 @@ if (finePointer) {
 }
 
 /* ===========================
+   MOTION DESIGN
+=========================== */
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* Intro : retirée du DOM une fois le rideau levé */
+const intro = document.querySelector('.intro');
+if (intro) {
+    if (document.documentElement.classList.contains('has-intro')) {
+        setTimeout(() => intro.remove(), 2200);
+    } else {
+        intro.remove();
+    }
+}
+
+/* Titre du hero découpé en mots */
+const heroTitle = document.querySelector('.split');
+if (heroTitle) {
+    heroTitle.setAttribute('aria-label', heroTitle.textContent.replace(/\s+/g, ' ').trim());
+    let wi = 0;
+    const splitWords = node => {
+        [...node.childNodes].forEach(child => {
+            if (child.nodeType === Node.ELEMENT_NODE) { splitWords(child); return; }
+            if (child.nodeType !== Node.TEXT_NODE) return;
+            const frag = document.createDocumentFragment();
+            child.textContent.split(/(\s+)/).forEach(part => {
+                if (!part) return;
+                if (!part.trim()) { frag.append(part); return; }
+                const w = document.createElement('span');
+                const inner = document.createElement('span');
+                w.className = 'w';
+                w.setAttribute('aria-hidden', 'true');
+                inner.textContent = part;
+                inner.style.setProperty('--wi', wi++);
+                w.append(inner);
+                frag.append(w);
+            });
+            child.replaceWith(frag);
+        });
+    };
+    splitWords(heroTitle);
+    requestAnimationFrame(() => requestAnimationFrame(() => heroTitle.classList.add('in')));
+}
+
+/* Fil lumineux entre les étapes */
+document.querySelectorAll('.steps').forEach(el => revealObserver.observe(el));
+
+/* Ondes radar calées sur le repère de Huttenheim (image en object-fit: cover) */
+const zoneMap = document.querySelector('.zone-map');
+if (zoneMap) {
+    const img = zoneMap.querySelector('img');
+    const pings = zoneMap.querySelector('.zone-pings');
+    const PIN = { x: 0.7435, y: 0.385 }; // position du repère dans l'image
+    const placePings = () => {
+        const W = zoneMap.clientWidth, H = zoneMap.clientHeight;
+        const nw = img.naturalWidth || 3508, nh = img.naturalHeight || 2320;
+        const scale = Math.max(W / nw, H / nh);
+        pings.style.setProperty('--x', `${(W - nw * scale) / 2 + PIN.x * nw * scale}px`);
+        pings.style.setProperty('--y', `${(H - nh * scale) / 2 + PIN.y * nh * scale}px`);
+    };
+    new ResizeObserver(placePings).observe(zoneMap);
+    img.addEventListener('load', placePings);
+}
+
+if (!reduceMotion) {
+    const ambient = document.querySelector('.ambient');
+    const progress = document.querySelector('.progress');
+    const marquee = document.querySelector('.marquee');
+    const marqueeAnim = marquee && marquee.querySelector('.marquee-track').getAnimations()[0];
+    const glow = document.querySelector('.cursor-glow');
+
+    let lastY = window.scrollY, velocity = 0, direction = 1, lastSkew = 0;
+    let gx = innerWidth / 2, gy = innerHeight / 2, tx = gx, ty = gy;
+
+    const frame = () => {
+        const y = window.scrollY;
+        const max = document.documentElement.scrollHeight - innerHeight;
+
+        // progression + parallaxe du fond
+        progress.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
+        ambient.style.setProperty('--sy', y.toFixed(0));
+
+        // bandeau : accélère, change de sens et s'incline selon le scroll
+        velocity += ((y - lastY) - velocity) * 0.12;
+        lastY = y;
+        if (Math.abs(velocity) > 0.5) direction = Math.sign(velocity);
+        if (marqueeAnim) marqueeAnim.playbackRate = direction * (1 + Math.min(Math.abs(velocity) * 0.35, 8));
+        const skew = Math.max(-10, Math.min(10, velocity * -0.4));
+        if (marquee && Math.abs(skew - lastSkew) > 0.05) {
+            marquee.style.setProperty('--skew', `${skew.toFixed(2)}deg`);
+            lastSkew = skew;
+        }
+
+        // halo du curseur, avec inertie
+        if (glow && finePointer) {
+            gx += (tx - gx) * 0.12;
+            gy += (ty - gy) * 0.12;
+            glow.style.transform = `translate3d(${gx.toFixed(1)}px, ${gy.toFixed(1)}px, 0)`;
+        }
+        requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+
+    if (finePointer) {
+        window.addEventListener('pointermove', e => {
+            tx = e.clientX; ty = e.clientY;
+            glow.classList.add('on');
+        }, { passive: true });
+        document.addEventListener('pointerleave', () => glow.classList.remove('on'));
+
+        // cartes flottantes du hero en parallaxe
+        const hero = document.querySelector('.hero');
+        const heroVisual = document.querySelector('.hero-visual');
+        hero.addEventListener('pointermove', e => {
+            const r = hero.getBoundingClientRect();
+            heroVisual.style.setProperty('--px', ((e.clientX - r.left) / r.width - 0.5).toFixed(3));
+            heroVisual.style.setProperty('--py', ((e.clientY - r.top) / r.height - 0.5).toFixed(3));
+        });
+        hero.addEventListener('pointerleave', () => {
+            heroVisual.style.setProperty('--px', 0);
+            heroVisual.style.setProperty('--py', 0);
+        });
+
+        // boutons magnétiques
+        document.querySelectorAll('.btn-primary, .card-arrow').forEach(el => {
+            el.addEventListener('pointermove', e => {
+                const r = el.getBoundingClientRect();
+                const x = (e.clientX - r.left - r.width / 2) * 0.25;
+                const y = (e.clientY - r.top - r.height / 2) * 0.35;
+                el.style.translate = `${x.toFixed(1)}px ${y.toFixed(1)}px`;
+            });
+            el.addEventListener('pointerleave', () => { el.style.translate = ''; });
+        });
+    }
+}
+
+/* ===========================
    FORMULAIRE (EmailJS)
 =========================== */
 const form = document.getElementById('contact-form');
