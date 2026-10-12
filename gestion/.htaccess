@@ -1,0 +1,10 @@
+# Espace de gestion : pas de liste de fichiers, pas d'indexation
+Options -Indexes
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>
+
+# Fichiers de configuration jamais servis
+<FilesMatch "^config.*\.php$">
+  Require all denied
+</FilesMatch>

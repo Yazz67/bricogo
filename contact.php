@@ -135,6 +135,16 @@ $corpsHtml = '<!doctype html><html lang="fr"><body style="margin:0;padding:0;bac
   . '</td></tr>'
   . '</table></td></tr></table></body></html>';
 
+// Copie de la demande dans l'espace de gestion (onglet « Demandes »), sans bloquer l'envoi en cas de souci
+if (is_file(__DIR__ . '/gestion/lib/db.php')) {
+    try {
+        require_once __DIR__ . '/gestion/lib/db.php';
+        gestion_ajouter_demande($nom, $email, $tel, $objet, $message);
+    } catch (Throwable $e) {
+        error_log('Brico\'Go contact → gestion : ' . $e->getMessage());
+    }
+}
+
 $envoye = false;
 
 if (defined('SMTP_UTILISATEUR') && SMTP_UTILISATEUR !== '') {
