@@ -1,1 +1,4 @@
 contact-config.php
+gestion/config.php
+gestion/data/*
+!gestion/data/.htaccess
